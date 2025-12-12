@@ -25,7 +25,7 @@ import {
   ModalCloseDirective,
   ModalComponent
 } from '@abp/ng.theme.shared';
-import { PurchaseListDto, PurchaseService } from '../proxy/purchases';
+import { CreateUpdatePurchaseDto, PurchaseListDto, PurchaseService } from '../proxy/purchases';
 
 @Component({
   selector: 'app-purchase',
@@ -137,5 +137,53 @@ export class PurchaseComponent implements OnInit {
     this.payableAmount = amount - discount;
 
     const paid = Number(this.form.get('paidAmount')?.value || 0);
+  }
+
+  save() {
+    if (this.form.invalid) {
+      return;
+    }
+
+    const formValue = this.form.value;
+
+    // Convert NgbDateStruct → yyyy-MM-dd
+    const formattedDate = this.formatDate(formValue.purchaseDate);
+
+    // Prepare DTO
+    const requestData: CreateUpdatePurchaseDto = {
+      purchaseNumber: formValue.purchaseNumber,
+      purchaseDate: formattedDate,
+      supplierName: formValue.supplierName,
+      description: formValue.description,
+      paidAmount: formValue.paidAmount,
+      purchaseItems: formValue.purchaseItems.map((item: any) => ({
+        productName: item.productName,
+        warehouseName: item.warehouseName,
+        quantity: Number(item.quantity),
+        unitPrice: Number(item.unitPrice),
+        discount: Number(item.discount),
+      })),
+    };
+
+    let request = this.purchaseService.create(requestData);
+
+    // if (this.selectedPurchase?.id) {
+    //   request = this.purchaseService.update(this.selectedPurchase.id, requestData);
+    // }
+
+    request.subscribe(() => {
+      this.isModalOpen = false;
+      this.form.reset();
+      this.list.get();
+    });
+  }
+
+  private formatDate(dateStruct: NgbDateStruct | null): string {
+    if (!dateStruct) {
+      return '';
+    }
+
+    const date = new Date(dateStruct.year, dateStruct.month - 1, dateStruct.day);
+    return formatDate(date, 'yyyy-MM-dd', 'en');
   }
 }

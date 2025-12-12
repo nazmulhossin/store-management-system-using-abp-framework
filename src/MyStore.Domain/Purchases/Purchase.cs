@@ -31,14 +31,11 @@ namespace MyStore.Purchases
             string? description = null
         ) : base(id)
         {
-            PurchaseNumber = Check.NotNullOrWhiteSpace(purchaseNumber, nameof(purchaseNumber), maxLength: PurchaseConsts.MaxPurchaseNumberLength);
-            SupplierName = Check.NotNullOrWhiteSpace(supplierName, nameof(supplierName), maxLength: PurchaseConsts.MaxSupplierNameLength);
+            Validate(purchaseNumber, purchaseDate, supplierName);
 
-            if (purchaseDate == default)
-            {
-                throw new InvalidPurchaseDateException(purchaseDate);
-            }
-
+            PurchaseNumber = purchaseNumber;
+            PurchaseDate = purchaseDate;
+            SupplierName = supplierName;
             Description = description;
             PurchaseItems = new List<PurchaseItem>();
         }
@@ -68,8 +65,21 @@ namespace MyStore.Purchases
         public void SetPaidAmount(decimal paidAmount)
         {
             PaidAmount = paidAmount;
-
             RecalculateTotals();
+        }
+
+        public void UpdateHeaderInfo(
+            string purchaseNumber,
+            DateTime purchaseDate,
+            string supplierName,
+            string description)
+        {
+            Validate(purchaseNumber, purchaseDate, supplierName);
+
+            PurchaseNumber = purchaseNumber;
+            PurchaseDate = purchaseDate;
+            SupplierName = supplierName;
+            Description = description;
         }
 
         public void RemoveItem(Guid itemId)
@@ -95,11 +105,23 @@ namespace MyStore.Purchases
             }
         }
 
-        public void RecalculateTotals()
+        private void RecalculateTotals()
         {
             TotalAmount = PurchaseItems.Sum(x => x.SubTotal);
             PayableAmount = TotalAmount - OverallDiscount;
             DueAmount = PayableAmount - PaidAmount;
+        }
+
+        private void Validate(
+            string purchaseNumber,
+            DateTime purchaseDate,
+            string supplierName)
+        {
+            Check.NotNullOrWhiteSpace(purchaseNumber, nameof(purchaseNumber), maxLength: PurchaseConsts.MaxPurchaseNumberLength);
+            Check.NotNullOrWhiteSpace(supplierName, nameof(supplierName), maxLength: PurchaseConsts.MaxSupplierNameLength);
+
+            if (purchaseDate == default)
+                throw new InvalidPurchaseDateException(purchaseDate);
         }
     }
 }

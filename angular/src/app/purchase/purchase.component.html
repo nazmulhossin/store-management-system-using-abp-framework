@@ -37,19 +37,25 @@
           </div>
         </ng-template>
       </ngx-datatable-column>
+
       <ngx-datatable-column [name]="'::PurchaseNumber' | abpLocalization" prop="purchaseNumber"></ngx-datatable-column>
+
       <ngx-datatable-column [name]="'::PurchaseDate' | abpLocalization" prop="purchaseDate">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row.purchaseDate | date }}
         </ng-template>
       </ngx-datatable-column>
+
       <ngx-datatable-column [name]="'::SupplierName' | abpLocalization" prop="supplierName"></ngx-datatable-column>
+
       <ngx-datatable-column [name]="'::description' | abpLocalization" prop="description"></ngx-datatable-column>
+
       <ngx-datatable-column [name]="'::TotalAmount' | abpLocalization" prop="totalAmount">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row.totalAmount | currency }}
         </ng-template>
       </ngx-datatable-column>
+
       <ngx-datatable-column [name]="'::PaidAmount' | abpLocalization" prop="paidAmount">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row.paidAmount | currency }}
@@ -102,13 +108,13 @@
       <table class="table table-bordered mt-2 purchase-items-table">
         <thead>
           <tr>
+            <th>Serial</th>
             <th style="width: 25%">Product Name</th>
             <th style="width: 25%">Warehouse Name</th>
-            <th style="width: 15%">Quantity</th>
-            <th style="width: 15%">Unit Price</th>
-            <th style="width: 15%">Item Discount</th>
+            <th style="width: 17%">Quantity</th>
+            <th style="width: 17%">Unit Price</th>
+            <th style="width: 17%">Item Discount</th>
 
-            <!-- FIXED WIDTH COLUMN FOR BUTTON -->
             <th style="text-align:center;">
               <button class="btn btn-primary btn-sm" type="button" (click)="addItem()"><i class="fa-solid fa-plus"></i></button>
             </th>
@@ -117,6 +123,7 @@
 
         <tbody formArrayName="purchaseItems">
           <tr *ngFor="let item of purchaseItems.controls; let i = index" [formGroupName]="i">
+            <td>{{i+1}}</td>
 
             <td><input class="form-control" formControlName="productName"></td>
             <td><input class="form-control" formControlName="warehouseName"></td>

@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using MyStore.Permissions;
+using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
-using static MyStore.Permissions.MyStorePermissions;
 
 namespace MyStore.Purchases
 {
+    [Authorize(MyStorePermissions.Purchases.Default)]
     public class PurchaseAppService : MyStoreAppService, IPurchaseAppService
     {
         private readonly IPurchaseRepository _purchaseRepository;
@@ -47,15 +48,17 @@ namespace MyStore.Purchases
             );
         }
 
+        [Authorize(MyStorePermissions.Purchases.Create)]
         public async Task<PurchaseDto> CreateAsync(CreateUpdatePurchaseDto input)
         {
             var purchase = await _purchaseManager.CreateAsync(
-                input.purchaseNumber,
+                input.PurchaseNumber,
                 input.PurchaseDate,
                 input.SupplierName,
                 input.Description
             );
 
+            // Add items
             foreach (var itemDto in input.PurchaseItems)
             {
                 purchase.AddItem(
@@ -73,6 +76,47 @@ namespace MyStore.Purchases
             await _purchaseRepository.InsertAsync(purchase);
 
             return ObjectMapper.Map<Purchase, PurchaseDto>(purchase);
+        }
+
+        [Authorize(MyStorePermissions.Purchases.Edit)]
+        public async Task<PurchaseDto> UpdateAsync(Guid id, CreateUpdatePurchaseDto input)
+        {
+            var purchase = await _purchaseRepository.GetAsync(id, includeDetails: true);
+
+            purchase.UpdateHeaderInfo(
+                input.PurchaseNumber,
+                input.PurchaseDate,
+                input.SupplierName,
+                input.Description
+            );
+
+            // remove existing items; It aslo delete PurchaseItems from db when save
+            purchase.PurchaseItems.Clear();
+
+            // Add items
+            foreach (var itemDto in input.PurchaseItems)
+            {
+                purchase.AddItem(
+                    GuidGenerator.Create(),
+                    itemDto.ProductName,
+                    itemDto.WarehouseName,
+                    itemDto.Quantity,
+                    itemDto.UnitPrice,
+                    itemDto.Discount
+                );
+            }
+
+            purchase.SetPaidAmount(input.PaidAmount);
+
+            await _purchaseRepository.UpdateAsync(purchase);
+
+            return ObjectMapper.Map<Purchase, PurchaseDto>(purchase);
+        }
+
+        [Authorize(MyStorePermissions.Purchases.Delete)]
+        public async Task DeleteAsync(Guid id)
+        {
+            await _purchaseRepository.DeleteAsync(id);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace MyStore.Purchases
     public class CreateUpdatePurchaseDto
     {
         [Required]
-        public string purchaseNumber { get; set; }
+        public string PurchaseNumber { get; set; }
 
         [Required]
         public DateTime PurchaseDate { get; set; }
