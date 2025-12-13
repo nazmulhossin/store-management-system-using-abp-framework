@@ -8,7 +8,7 @@ namespace MyStore.Purchases
         public InvalidPurchaseDateException(DateTime purchaseDate)
         : base(MyStoreDomainErrorCodes.InvalidPurchaseDate)
         {
-            WithData("purchaseDate", purchaseDate);
+            WithData("PurchaseDate", purchaseDate);
         }
     }
 }

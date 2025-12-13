@@ -27,10 +27,10 @@
               <i class="fa fa-cog me-1"></i>{{ '::Actions' | abpLocalization }}
             </button>
             <div ngbDropdownMenu>
-              <button *abpPermission="'MyStore.Purchases.Edit'" ngbDropdownItem (click)="editBook(row.id)">
+              <button *abpPermission="'MyStore.Purchases.Edit'" ngbDropdownItem (click)="editPurchase(row.id)">
                 {{ '::Edit' | abpLocalization }}
               </button>
-              <button *abpPermission="'MyStore.Purchases.Delete'" ngbDropdownItem (click)="delete(row.id)">
+              <button *abpPermission="'MyStore.Purchases.Delete'" ngbDropdownItem (click)="deletePurchase(row.id)">
                 {{ '::Delete' | abpLocalization }}
               </button>
             </div>
@@ -52,13 +52,13 @@
 
       <ngx-datatable-column [name]="'::TotalAmount' | abpLocalization" prop="totalAmount">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ row.totalAmount | currency }}
+          {{ row.totalAmount | currency:'BDT':'৳':'1.2-2' }}
         </ng-template>
       </ngx-datatable-column>
 
       <ngx-datatable-column [name]="'::PaidAmount' | abpLocalization" prop="paidAmount">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ row.paidAmount | currency }}
+          {{ row.paidAmount | currency:'BDT':'৳':'1.2-2' }}
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>
@@ -78,7 +78,7 @@
         <div class="top-section-top">
           <div class="top-form-field">
             <label>Purchase Number</label><span class="required-field"> * </span>
-            <input class="form-control" formControlName="purchaseNumber" />
+            <input class="form-control" formControlName="purchaseNumber" autofocus />
           </div>
 
           <div class="top-form-field">

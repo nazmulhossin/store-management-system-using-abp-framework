@@ -65,22 +65,13 @@ namespace MyStore.Purchases
             WarehouseName = Check.NotNullOrWhiteSpace(warehouseName, nameof(warehouseName), maxLength: PurchaseConsts.MaxWarehouseNameLength);
 
             if (quantity <= 0)
-            {
-                throw new BusinessException("StoreApp:InvalidQuantity")
-                    .WithData("quantity", quantity);
-            }
+                throw new BusinessException(MyStoreDomainErrorCodes.QuantityMustBeGreaterThanZero);
 
             if (unitPrice <= 0)
-            {
-                throw new BusinessException("StoreApp:InvalidUnitPrice")
-                    .WithData("unitPrice", unitPrice);
-            }
+                throw new BusinessException(MyStoreDomainErrorCodes.PurchaseItemUnitPriceMustBeGreaterThanZero);
 
             if (discount < 0)
-            {
-                throw new BusinessException("StoreApp:InvalidDiscount")
-                    .WithData("discount", discount);
-            }
+                throw new BusinessException(MyStoreDomainErrorCodes.PurchaseItemDiscountCanNotBeNegative);
         }
     }
 }

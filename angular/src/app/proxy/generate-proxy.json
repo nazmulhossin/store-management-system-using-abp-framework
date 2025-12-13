@@ -1213,6 +1213,126 @@
             }
           }
         },
+        "MyStore.Inventory.StockAppService": {
+          "controllerName": "Stock",
+          "controllerGroupName": "Stock",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "MyStore.Inventory.StockAppService",
+          "interfaces": [
+            {
+              "type": "MyStore.Inventory.IStockAppService",
+              "name": "IStockAppService",
+              "methods": [
+                {
+                  "name": "GetListAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "MyStore.Inventory.GetStockListDto, MyStore.Application.Contracts",
+                      "type": "MyStore.Inventory.GetStockListDto",
+                      "typeSimple": "MyStore.Inventory.GetStockListDto",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<MyStore.Inventory.StockDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<MyStore.Inventory.StockDto>"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetListAsyncByInput": {
+              "uniqueName": "GetListAsyncByInput",
+              "name": "GetListAsync",
+              "httpMethod": "GET",
+              "url": "api/app/stock",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "MyStore.Inventory.GetStockListDto, MyStore.Application.Contracts",
+                  "type": "MyStore.Inventory.GetStockListDto",
+                  "typeSimple": "MyStore.Inventory.GetStockListDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "ProductName",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "WarehouseName",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<MyStore.Inventory.StockDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<MyStore.Inventory.StockDto>"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "MyStore.Inventory.IStockAppService"
+            }
+          }
+        },
         "MyStore.Purchases.PurchaseAppService": {
           "controllerName": "Purchase",
           "controllerGroupName": "Purchase",
@@ -1297,7 +1417,7 @@
                 "type": "MyStore.Purchases.PurchaseDto",
                 "typeSimple": "MyStore.Purchases.PurchaseDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "MyStore.Purchases.PurchaseAppService"
             },
             "GetListAsyncByInput": {
@@ -1370,7 +1490,7 @@
                 "type": "Volo.Abp.Application.Dtos.PagedResultDto<MyStore.Purchases.PurchaseListDto>",
                 "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<MyStore.Purchases.PurchaseListDto>"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "MyStore.Purchases.IPurchaseAppService"
             },
             "CreateAsyncByInput": {
@@ -1407,8 +1527,102 @@
                 "type": "MyStore.Purchases.PurchaseDto",
                 "typeSimple": "MyStore.Purchases.PurchaseDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "MyStore.Purchases.IPurchaseAppService"
+            },
+            "UpdateAsyncByIdAndInput": {
+              "uniqueName": "UpdateAsyncByIdAndInput",
+              "name": "UpdateAsync",
+              "httpMethod": "PUT",
+              "url": "api/app/purchase/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "MyStore.Purchases.CreateUpdatePurchaseDto, MyStore.Application.Contracts",
+                  "type": "MyStore.Purchases.CreateUpdatePurchaseDto",
+                  "typeSimple": "MyStore.Purchases.CreateUpdatePurchaseDto",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "MyStore.Purchases.CreateUpdatePurchaseDto",
+                  "typeSimple": "MyStore.Purchases.CreateUpdatePurchaseDto",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "MyStore.Purchases.PurchaseDto",
+                "typeSimple": "MyStore.Purchases.PurchaseDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "MyStore.Purchases.PurchaseAppService"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/app/purchase/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "MyStore.Purchases.PurchaseAppService"
             }
           }
         }
@@ -4309,6 +4523,84 @@
         }
       ]
     },
+    "MyStore.Inventory.GetStockListDto": {
+      "baseType": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "ProductName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "WarehouseName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "MyStore.Inventory.StockDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "ProductName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "WarehouseName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CurrentStock",
+          "jsonName": null,
+          "type": "System.Int32",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "MyStore.Purchases.CreateUpdatePurchaseDto": {
       "baseType": null,
       "isEnum": false,
@@ -4317,7 +4609,7 @@
       "genericArguments": null,
       "properties": [
         {
-          "name": "purchaseNumber",
+          "name": "PurchaseNumber",
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
@@ -4382,7 +4674,7 @@
           "type": "[MyStore.Purchases.CreateUpdatePurchaseItemDto]",
           "typeSimple": "[MyStore.Purchases.CreateUpdatePurchaseItemDto]",
           "isRequired": true,
-          "minLength": null,
+          "minLength": 1,
           "maxLength": null,
           "minimum": null,
           "maximum": null,
@@ -4397,6 +4689,18 @@
       "enumValues": null,
       "genericArguments": null,
       "properties": [
+        {
+          "name": "Id",
+          "jsonName": null,
+          "type": "System.Guid?",
+          "typeSimple": "string?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
         {
           "name": "ProductName",
           "jsonName": null,
@@ -4596,7 +4900,7 @@
           "regex": null
         },
         {
-          "name": "Items",
+          "name": "PurchaseItems",
           "jsonName": null,
           "type": "[MyStore.Purchases.PurchaseItemDto]",
           "typeSimple": "[MyStore.Purchases.PurchaseItemDto]",

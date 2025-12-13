@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyStore.Books;
+using MyStore.Inventory;
 using MyStore.Purchases;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -32,6 +33,7 @@ public class MyStoreDbContext :
     public DbSet<Book> Books { get; set; }
     public DbSet<Purchase> Purchases { get; set; }
     public DbSet<PurchaseItem> PurchaseItems { get; set; }
+    public DbSet<Stock> Stocks { get; set; }
 
     #region Entities from the modules
 
@@ -126,6 +128,24 @@ public class MyStoreDbContext :
             b.Property(x => x.UnitPrice).HasPrecision(18, 2);
             b.Property(x => x.SubTotal).HasPrecision(18, 2);
             b.Property(x => x.Discount).HasPrecision(18, 2);
+        });
+
+        builder.Entity<Stock>(b =>
+        {
+            b.ToTable(MyStoreConsts.DbTablePrefix + "Stocks",
+                MyStoreConsts.DbSchema);
+
+            b.ConfigureByConvention();
+
+            b.Property(x => x.ProductName).IsRequired().HasMaxLength(PurchaseConsts.MaxProductNameLength);
+            b.Property(x => x.WarehouseName).IsRequired().HasMaxLength(PurchaseConsts.MaxWarehouseNameLength);
+            b.Property(x => x.CurrentStock).IsRequired();
+
+            // Add indexes for better query performance
+            b.HasIndex(x => x.ProductName);
+            b.HasIndex(x => x.WarehouseName);
+            b.HasIndex(x => new { x.ProductName, x.WarehouseName })
+                .IsUnique(); // Ensure unique product-warehouse combination
         });
     }
 }

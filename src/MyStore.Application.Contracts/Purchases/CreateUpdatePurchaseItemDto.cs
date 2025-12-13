@@ -5,6 +5,8 @@ namespace MyStore.Purchases
 {
     public class CreateUpdatePurchaseItemDto
     {
+        public Guid? Id { get; set; }
+
         [Required]
         public string ProductName { get; set; }
 

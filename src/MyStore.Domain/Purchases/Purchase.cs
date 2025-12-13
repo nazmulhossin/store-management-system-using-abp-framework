@@ -68,6 +68,12 @@ namespace MyStore.Purchases
             RecalculateTotals();
         }
 
+        public void EnsureHasPurchaseItems()
+        {
+            if (PurchaseItems == null || !PurchaseItems.Any())
+                throw new BusinessException(MyStoreDomainErrorCodes.MustHaveAtLeastOneItem);
+        }
+
         public void UpdateHeaderInfo(
             string purchaseNumber,
             DateTime purchaseDate,

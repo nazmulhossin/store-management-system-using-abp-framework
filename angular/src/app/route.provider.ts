@@ -30,6 +30,13 @@ function configureRoutes() {
       iconClass: 'fa fa-shopping-cart',
       layout: eLayoutType.application,
       requiredPolicy: 'MyStore.Purchases'
+    },
+    {
+      path: '/inventory',
+      name: '::Menu:Inventory',
+      iconClass: 'fa-solid fa-warehouse',
+      layout: eLayoutType.application,
+      requiredPolicy: 'MyStore.Inventory'
     }
   ]);
 }

@@ -15,6 +15,6 @@ namespace MyStore.Purchases
         public decimal PayableAmount { get; set; }
         public decimal PaidAmount { get; set; }
         public decimal DueAmount { get; set; }
-        public List<PurchaseItemDto> Items { get; set; } = new List<PurchaseItemDto>();
+        public List<PurchaseItemDto> PurchaseItems { get; set; } = new List<PurchaseItemDto>();
     }
 }

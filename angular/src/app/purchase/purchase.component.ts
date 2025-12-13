@@ -4,7 +4,8 @@ import {
   Validators,
   FormsModule,
   ReactiveFormsModule,
-  FormArray
+  FormArray,
+  AbstractControl
 } from '@angular/forms';
 import { Component, inject, OnInit } from '@angular/core';
 import { DatePipe, CurrencyPipe, formatDate, CommonModule } from '@angular/common';
@@ -73,11 +74,33 @@ export class PurchaseComponent implements OnInit {
   }
 
   createPurchase() {
+    this.selectedPurchase = {} as PurchaseListDto;
     this.totalAmount = 0;
     this.totalDiscount = 0;
     this.payableAmount = 0;
     this.buildForm();
     this.isModalOpen = true;
+  }
+
+  editPurchase(id: string) {
+    this.purchaseService.get(id).subscribe(purchase => {
+      this.selectedPurchase = purchase;
+      console.log(purchase);
+      this.buildForm();              // create empty form
+      this.patchHeader(purchase);    // set header values
+      this.patchItems(purchase);     // set items
+      this.updateSummary();          // recalculate totals
+
+      this.isModalOpen = true;
+    });
+  }
+
+  deletePurchase(id: string) {
+    this.confirmation.warn('::AreYouSureToDelete', '::AreYouSure').subscribe(status => {
+      if (status === Confirmation.Status.confirm) {
+        this.purchaseService.delete(id).subscribe(() => this.list.get());
+      }
+    });
   }
 
   buildForm() {
@@ -87,7 +110,7 @@ export class PurchaseComponent implements OnInit {
       supplierName: ['', Validators.required],
       description: [''],
       paidAmount: [0, Validators.required],
-      purchaseItems: this.fb.array([])
+      purchaseItems: this.fb.array([], [this.minItems(1)])
     });
 
     // Initialize summary values
@@ -113,8 +136,8 @@ export class PurchaseComponent implements OnInit {
     return this.fb.group({
       productName: ['', Validators.required],
       warehouseName: ['', Validators.required],
-      quantity: [0, Validators.required],
-      unitPrice: [0, Validators.required],
+      quantity: [0, [Validators.required, Validators.min(1)]],
+      unitPrice: [0, [Validators.required, Validators.min(0.0001)]],
       discount: [0],
     });
   }
@@ -155,7 +178,7 @@ export class PurchaseComponent implements OnInit {
       purchaseDate: formattedDate,
       supplierName: formValue.supplierName,
       description: formValue.description,
-      paidAmount: formValue.paidAmount,
+      paidAmount: Number(formValue.paidAmount),
       purchaseItems: formValue.purchaseItems.map((item: any) => ({
         productName: item.productName,
         warehouseName: item.warehouseName,
@@ -165,17 +188,69 @@ export class PurchaseComponent implements OnInit {
       })),
     };
 
-    let request = this.purchaseService.create(requestData);
+    let request$;
 
-    // if (this.selectedPurchase?.id) {
-    //   request = this.purchaseService.update(this.selectedPurchase.id, requestData);
-    // }
+    if (this.selectedPurchase?.id) {
+      request$ = this.purchaseService.update(this.selectedPurchase.id, requestData);
+    } else {
+      request$ = this.purchaseService.create(requestData);
+    }
 
-    request.subscribe(() => {
+    request$.subscribe(() => {
       this.isModalOpen = false;
       this.form.reset();
+      this.selectedPurchase = {} as any;
       this.list.get();
     });
+  }
+
+  private patchHeader(purchase: any) {
+    this.form.patchValue({
+      purchaseNumber: purchase.purchaseNumber,
+      purchaseDate: this.parseDate(purchase.purchaseDate),
+      supplierName: purchase.supplierName,
+      description: purchase.description,
+      paidAmount: purchase.paidAmount
+    });
+  }
+
+  private patchItems(purchase: any) {
+    this.purchaseItems.clear();
+
+    purchase.purchaseItems.forEach(item => {
+      this.purchaseItems.push(
+        this.fb.group({
+          productName: [item.productName, Validators.required],
+          warehouseName: [item.warehouseName, Validators.required],
+          quantity: [item.quantity, Validators.required],
+          unitPrice: [item.unitPrice, Validators.required],
+          discount: [item.discount || 0],
+        })
+      );
+    });
+  }
+
+  minItems(min: number) {
+    return (formArray: AbstractControl) => {
+      return (formArray as FormArray).length >= min ? null : { minItems: true };
+    };
+  }
+
+  private parseDate(value: string | Date): NgbDateStruct | null {
+    if (!value) {
+      return null;
+    }
+
+    const date = new Date(value);
+    if (isNaN(date.getTime())) {
+      return null;
+    }
+
+    return {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
   }
 
   private formatDate(dateStruct: NgbDateStruct | null): string {

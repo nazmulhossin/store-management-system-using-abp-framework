@@ -21,6 +21,7 @@ namespace MyStore.Purchases
         public decimal PaidAmount { get; set; }
 
         [Required]
+        [MinLength(1)]
         public List<CreateUpdatePurchaseItemDto> PurchaseItems { get; set; } = new List<CreateUpdatePurchaseItemDto>();
     }
 }

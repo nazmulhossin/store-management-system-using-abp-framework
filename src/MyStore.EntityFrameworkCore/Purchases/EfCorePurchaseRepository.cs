@@ -29,5 +29,10 @@ namespace MyStore.Purchases
                 .Take(maxResultCount)
                 .ToListAsync();
         }
+
+        public override async Task<IQueryable<Purchase>> WithDetailsAsync()
+        {
+            return (await GetQueryableAsync()).Include(p => p.PurchaseItems);
+        }
     }
 }

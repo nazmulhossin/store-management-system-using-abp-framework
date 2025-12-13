@@ -10,6 +10,7 @@ export interface CreateUpdatePurchaseDto {
 }
 
 export interface CreateUpdatePurchaseItemDto {
+  id?: string;
   productName: string;
   warehouseName: string;
   quantity: number;
@@ -31,7 +32,7 @@ export interface PurchaseDto extends EntityDto<string> {
   payableAmount: number;
   paidAmount: number;
   dueAmount: number;
-  items: PurchaseItemDto[];
+  purchaseItems: PurchaseItemDto[];
 }
 
 export interface PurchaseItemDto extends EntityDto<string> {

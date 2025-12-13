@@ -1,0 +1,44 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col col-md-6">
+        <h5 class="card-title">
+          {{ '::Menu:Inventory' | abpLocalization }}
+        </h5>
+      </div>
+    </div>
+
+    <div class="row mb-3 mt-2">
+      <div class="col-md-3">
+        <label for="">Product Name</label>
+        <input type="text" class="form-control" [(ngModel)]="filters.productName" placeholder="Enter Product Name" />
+      </div>
+
+      <div class="col-md-3">
+        <label for="">Warehouse Name</label>
+        <input type="text" class="form-control" [(ngModel)]="filters.warehouseName" placeholder="Enter Warehouse Name" />
+      </div>
+
+      <div class="col-md-4 d-flex align-items-end">
+        <button class="btn btn-primary me-2 p-2" (click)="applyFilter()">
+          <i class="fa-solid fa-filter me-1"></i>
+          {{ '::Filter' | abpLocalization }}
+        </button>
+
+        <button class="btn btn-outline-secondary p-2" (click)="clearFilter()">
+          {{ '::Clear' | abpLocalization }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <ngx-datatable [rows]="stock.items" [count]="stock.totalCount" [list]="list" default>
+      <ngx-datatable-column [name]="'::ProductName' | abpLocalization" prop="productName"></ngx-datatable-column>
+
+      <ngx-datatable-column [name]="'::WarehouseName' | abpLocalization" prop="warehouseName"></ngx-datatable-column>
+
+      <ngx-datatable-column [name]="'::CurrentStock' | abpLocalization" prop="currentStock"></ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>

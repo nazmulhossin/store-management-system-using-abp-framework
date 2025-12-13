@@ -21,6 +21,11 @@ public static class MyStorePermissions
         public const string Delete = Default + ".Delete";
     }
 
+    public static class Inventory
+    {
+        public const string Default = GroupName + ".Inventory";
+    }
+
     //Add your own permission names. Example:
     //public const string MyPermission1 = GroupName + ".MyPermission1";
 }
