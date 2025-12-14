@@ -38,4 +38,9 @@ export const APP_ROUTES: Routes = [
     loadComponent: () => import('./inventory/stock.component').then(c => c.StockComponent),
     canActivate: [authGuard, permissionGuard],
   },
+  {
+    path: 'sales',
+    loadComponent: () => import('./sale/sale.component').then(c => c.SaleComponent),
+    canActivate: [authGuard, permissionGuard],
+  },
 ];

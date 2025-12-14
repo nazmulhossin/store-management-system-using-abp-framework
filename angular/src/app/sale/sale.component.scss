@@ -1,0 +1,35 @@
+::ng-deep .modal-dialog {
+    max-width: 70vw !important;
+}
+
+.required-field {
+    color: red;
+}
+
+.sale-form {
+    .top-section-top {
+        display: flex;
+        gap: 25px;
+        justify-content: space-between;
+
+        .top-form-field {
+            width: 33%;
+        }
+    }
+
+    .summary {
+        display: flex;
+        gap: 25px;
+    }
+
+    .sale-items-table th,
+    .sale-items-table td {
+        vertical-align: middle;
+    }
+
+    .sale-items-table th:last-child,
+    .sale-items-table td:last-child {
+        text-align: center;
+        width: 50px !important;
+    }
+}

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MyStore.Books;
 using MyStore.Inventory;
 using MyStore.Purchases;
+using MyStore.Sales;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
@@ -31,9 +32,11 @@ public class MyStoreDbContext :
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
     public DbSet<Book> Books { get; set; }
+    public DbSet<Stock> Stocks { get; set; }
     public DbSet<Purchase> Purchases { get; set; }
     public DbSet<PurchaseItem> PurchaseItems { get; set; }
-    public DbSet<Stock> Stocks { get; set; }
+    public DbSet<Sale> Sales { get; set; }
+    public DbSet<SaleItem> SaleItems { get; set; }
 
     #region Entities from the modules
 
@@ -94,6 +97,24 @@ public class MyStoreDbContext :
             b.Property(x => x.Name).IsRequired().HasMaxLength(128);
         });
 
+        builder.Entity<Stock>(b =>
+        {
+            b.ToTable(MyStoreConsts.DbTablePrefix + "Stocks",
+                MyStoreConsts.DbSchema);
+
+            b.ConfigureByConvention();
+
+            b.Property(x => x.ProductName).IsRequired().HasMaxLength(PurchaseConsts.MaxProductNameLength);
+            b.Property(x => x.WarehouseName).IsRequired().HasMaxLength(PurchaseConsts.MaxWarehouseNameLength);
+            b.Property(x => x.CurrentStock).IsRequired();
+
+            // Add indexes for better query performance
+            b.HasIndex(x => x.ProductName);
+            b.HasIndex(x => x.WarehouseName);
+            b.HasIndex(x => new { x.ProductName, x.WarehouseName })
+                .IsUnique(); // Ensure unique product-warehouse combination
+        });
+
         builder.Entity<Purchase>(b =>
         {
             b.ToTable(MyStoreConsts.DbTablePrefix + "Purchases",
@@ -130,22 +151,42 @@ public class MyStoreDbContext :
             b.Property(x => x.Discount).HasPrecision(18, 2);
         });
 
-        builder.Entity<Stock>(b =>
+        builder.Entity<Sale>(b =>
         {
-            b.ToTable(MyStoreConsts.DbTablePrefix + "Stocks",
+            b.ToTable(MyStoreConsts.DbTablePrefix + "Sales",
+                MyStoreConsts.DbSchema);
+
+            b.ConfigureByConvention();
+
+            b.Property(x => x.SalesNumber).IsRequired().HasMaxLength(SaleConsts.MaxSaleNumberLength);
+            b.Property(x => x.CustomerName).IsRequired().HasMaxLength(SaleConsts.MaxCustomerNameLength);
+            b.Property(x => x.SalesDate).IsRequired();
+            b.Property(x => x.TotalAmount).HasPrecision(18, 2);
+            b.Property(x => x.OverallDiscount).HasPrecision(18, 2);
+            b.Property(x => x.PayableAmount).HasPrecision(18, 2);
+            b.Property(x => x.PaidAmount).HasPrecision(18, 2);
+            b.Property(x => x.DueAmount).HasPrecision(18, 2);
+
+            b.HasMany(x => x.SaleItems)
+                .WithOne()
+                .HasForeignKey(x => x.SaleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            b.HasIndex(x => x.SalesDate);
+        });
+
+        builder.Entity<SaleItem>(b =>
+        {
+            b.ToTable(MyStoreConsts.DbTablePrefix + "SaleItems",
                 MyStoreConsts.DbSchema);
 
             b.ConfigureByConvention();
 
             b.Property(x => x.ProductName).IsRequired().HasMaxLength(PurchaseConsts.MaxProductNameLength);
             b.Property(x => x.WarehouseName).IsRequired().HasMaxLength(PurchaseConsts.MaxWarehouseNameLength);
-            b.Property(x => x.CurrentStock).IsRequired();
-
-            // Add indexes for better query performance
-            b.HasIndex(x => x.ProductName);
-            b.HasIndex(x => x.WarehouseName);
-            b.HasIndex(x => new { x.ProductName, x.WarehouseName })
-                .IsUnique(); // Ensure unique product-warehouse combination
+            b.Property(x => x.UnitPrice).HasPrecision(18, 2);
+            b.Property(x => x.SubTotal).HasPrecision(18, 2);
+            b.Property(x => x.Discount).HasPrecision(18, 2);
         });
     }
 }

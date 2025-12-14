@@ -19,7 +19,7 @@ namespace MyStore.Inventory
             CurrentStock = initialQuantity > 0 ? initialQuantity : throw new BusinessException(MyStoreDomainErrorCodes.QuantityMustBeGreaterThanZero);
         }
 
-        internal void AddStock(int quantity)
+        internal void IncreaseStock(int quantity)
         {
             if (quantity <= 0)
                 throw new BusinessException(MyStoreDomainErrorCodes.QuantityMustBeGreaterThanZero);
@@ -27,13 +27,13 @@ namespace MyStore.Inventory
             CurrentStock += quantity;
         }
 
-        internal void RemoveStock(int quantity)
+        internal void DecreaseStock(int quantity)
         {
             if (quantity <= 0)
                 throw new BusinessException(MyStoreDomainErrorCodes.QuantityMustBeGreaterThanZero);
 
             if (CurrentStock < quantity)
-                throw new BusinessException(MyStoreDomainErrorCodes.SaleQuantityExceedsAvailableStock);
+                throw new BusinessException(MyStoreDomainErrorCodes.ItemQuantityExceedsAvailableStock);
 
             CurrentStock -= quantity;
         }

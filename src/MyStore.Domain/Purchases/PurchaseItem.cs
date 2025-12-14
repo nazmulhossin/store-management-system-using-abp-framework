@@ -16,7 +16,7 @@ namespace MyStore.Purchases
 
         private PurchaseItem() { }
 
-        public PurchaseItem(
+        internal PurchaseItem(
             Guid id,
             Guid purchaseId,
             string productName,

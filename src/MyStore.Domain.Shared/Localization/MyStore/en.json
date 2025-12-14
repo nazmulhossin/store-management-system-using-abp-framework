@@ -31,6 +31,7 @@
     "Permission:Books.Create": "Creating new books",
     "Permission:Books.Edit": "Editing the books",
     "Permission:Books.Delete": "Deleting the books",
+
     "Menu:Purchases": "Purchases",
     "NewPurchase": "New Purchase",
     "PurchaseNumber": "Purchase Number",
@@ -42,20 +43,34 @@
     "Permission:Purchases.Create": "Creating new purchases",
     "Permission:Purchases.Edit": "Editing the purchases",
     "Permission:Purchases.Delete": "Deleting the purchases",
+
     "Menu:Inventory": "Inventory",
     "ProductName": "Product Name",
     "WarehouseName": "Warehouse Name",
     "CurrentStock": "Current Stock",
     "Permission:Inventory": "Inventory Management",
+
+    "Menu:Sales": "Sales",
+    "NewSale": "New Sale",
+    "SalesNumber": "Sales Number",
+    "SalesDate": "Sales Date",
+    "CustomerName": "Customer Name",
+    "Permission:Sales": "Sale Management",
+    "Permission:Sales.Create": "Creating new Sales",
+    "Permission:Sales.Edit": "Editing the Sales",
+    "Permission:Sales.Delete": "Deleting the Sales",
+
     "Menu:Home": "Home",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information visit",
     "Welcome": "Welcome",
     "StoreApp:00001": "Purchase date cannot be empty or in the future. Your Date is {PurchaseDate}",
-    "StoreApp:00002": "A purchase must contain at least one item",
+    "StoreApp:00002": "A purchase/sale must contain at least one item",
     "StoreApp:00003": "Purchase item quantity must be greater than zero",
-    "StoreApp:00004": "Insufficient stock. Sale quantity exceeds available stock",
+    "StoreApp:00004": "Insufficient stock. Item quantity exceeds available stock",
     "StoreApp:00005": "Stock not found for the selected product ({ProductName}) and warehouse ({WarehouseName})",
     "StoreApp:00006": "Purchase item unit price must be greater than 0",
-    "StoreApp:00007": "Purchase item discount can not be negative"
+    "StoreApp:00007": "Purchase item discount can not be negative",
+    "StoreApp:00008": "Sale date cannot be empty or in the future. Your Date is {SalesDate}",
+    "StoreApp:00009": "Sale item not found {ItemId}"
   }
 }

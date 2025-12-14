@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
-using static MyStore.Permissions.MyStorePermissions;
 
 namespace MyStore.Purchases
 {

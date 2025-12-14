@@ -32,6 +32,13 @@ function configureRoutes() {
       requiredPolicy: 'MyStore.Purchases'
     },
     {
+      path: '/sales',
+      name: '::Menu:Sales',
+      iconClass: 'fa-solid fa-file-invoice-dollar',
+      layout: eLayoutType.application,
+      requiredPolicy: 'MyStore.Sales'
+    },
+    {
       path: '/inventory',
       name: '::Menu:Inventory',
       iconClass: 'fa-solid fa-warehouse',

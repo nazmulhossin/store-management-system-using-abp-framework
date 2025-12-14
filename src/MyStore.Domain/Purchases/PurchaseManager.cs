@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyStore.Inventory;
+using MyStore.Sales;
+using System;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Services;
 
@@ -6,26 +8,53 @@ namespace MyStore.Purchases
 {
     public class PurchaseManager : DomainService
     {
-        private readonly IPurchaseRepository _purchaseRepository;
+        private readonly StockManager _stockManager;
 
-        public PurchaseManager(IPurchaseRepository purchaseRepository)
+        public PurchaseManager(StockManager stockManager)
         {
-            _purchaseRepository = purchaseRepository;
+            _stockManager = stockManager;
         }
 
         public async Task<Purchase> CreateAsync(
             string purchaseNumber,
             DateTime purchaseDate,
             string supplierName,
-            string description)
+            string? description = null,
+            decimal paidAmount = 0
+            )
         {
             return new Purchase(
                 GuidGenerator.Create(),
                 purchaseNumber,
                 purchaseDate,
                 supplierName,
-                description
+                description,
+                paidAmount
             );
+        }
+
+        public async Task IncreaseStockFromPurchaseAsync(Purchase purchase)
+        {
+            foreach (var item in purchase.PurchaseItems)
+            {
+                await _stockManager.IncreaseStockAsync(
+                    item.ProductName,
+                    item.WarehouseName,
+                    item.Quantity
+                );
+            }
+        }
+
+        public async Task ReduceStockFromPurchaseAsync(Purchase purchase)
+        {
+            foreach (var item in purchase.PurchaseItems)
+            {
+                await _stockManager.DecreaseStockAsync(
+                    item.ProductName,
+                    item.WarehouseName,
+                    item.Quantity
+                );
+            }
         }
     }
 }

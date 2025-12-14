@@ -23,6 +23,11 @@ public class MyStorePermissionDefinitionProvider : PermissionDefinitionProvider
 
         var inventoryPermission = myGroup.AddPermission(MyStorePermissions.Inventory.Default, L("Permission:Inventory"));
 
+        var salesPermission = myGroup.AddPermission(MyStorePermissions.Sales.Default, L("Permission:Sales"));
+        salesPermission.AddChild(MyStorePermissions.Sales.Create, L("Permission:Sales.Create"));
+        salesPermission.AddChild(MyStorePermissions.Sales.Edit, L("Permission:Sales.Edit"));
+        salesPermission.AddChild(MyStorePermissions.Sales.Delete, L("Permission:Sales.Delete"));
+
         //Define your own permissions here. Example:
         //myGroup.AddPermission(MyStorePermissions.MyPermission1, L("Permission:MyPermission1"));
     }

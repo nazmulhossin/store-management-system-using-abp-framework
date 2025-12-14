@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyStore.Sales;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Volo.Abp;
@@ -28,7 +29,8 @@ namespace MyStore.Purchases
             string purchaseNumber,
             DateTime purchaseDate,
             string supplierName,
-            string? description = null
+            string? description = null,
+            decimal paidAmount = 0
         ) : base(id)
         {
             Validate(purchaseNumber, purchaseDate, supplierName);
@@ -37,6 +39,7 @@ namespace MyStore.Purchases
             PurchaseDate = purchaseDate;
             SupplierName = supplierName;
             Description = description;
+            PaidAmount = paidAmount;
             PurchaseItems = new List<PurchaseItem>();
         }
 
@@ -62,23 +65,18 @@ namespace MyStore.Purchases
             RecalculateTotals();
         }
 
-        public void SetPaidAmount(decimal paidAmount)
-        {
-            PaidAmount = paidAmount;
-            RecalculateTotals();
-        }
-
         public void EnsureHasPurchaseItems()
         {
             if (PurchaseItems == null || !PurchaseItems.Any())
                 throw new BusinessException(MyStoreDomainErrorCodes.MustHaveAtLeastOneItem);
         }
 
-        public void UpdateHeaderInfo(
+        public void UpdateDetails(
             string purchaseNumber,
             DateTime purchaseDate,
             string supplierName,
-            string description)
+            string description,
+            decimal paidAmount)
         {
             Validate(purchaseNumber, purchaseDate, supplierName);
 
@@ -86,29 +84,18 @@ namespace MyStore.Purchases
             PurchaseDate = purchaseDate;
             SupplierName = supplierName;
             Description = description;
+            PaidAmount = paidAmount;
         }
 
-        public void RemoveItem(Guid itemId)
+        public void ClearItems()
         {
-            PurchaseItems.RemoveAll(x => x.Id == itemId);
-            RecalculateTotals();
-        }
-
-        public void UpdateItem(
-            Guid itemId,
-            string productCode,
-            string warehouseCode,
-            int quantity,
-            decimal unitPrice,
-            decimal discount
-        )
-        {
-            var item = PurchaseItems.FirstOrDefault(x => x.Id == itemId);
-            if (item != null)
+            if (!PurchaseItems.Any())
             {
-                item.UpdateDetails(productCode, warehouseCode, quantity, unitPrice, discount);
-                RecalculateTotals();
+                return;
             }
+
+            PurchaseItems.Clear();
+            RecalculateTotals();
         }
 
         private void RecalculateTotals()
