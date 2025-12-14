@@ -26,7 +26,7 @@ import {
   ModalCloseDirective,
   ModalComponent
 } from '@abp/ng.theme.shared';
-import { CreateUpdatePurchaseDto, PurchaseListDto, PurchaseService } from '../proxy/purchases';
+import { CreateUpdatePurchaseDto, GetPurchaseListDto, PurchaseListDto, PurchaseService } from '../proxy/purchases';
 
 @Component({
   selector: 'app-purchase',
@@ -65,12 +65,33 @@ export class PurchaseComponent implements OnInit {
   form: FormGroup;
   isModalOpen = false;
 
+  filters: Partial<GetPurchaseListDto> = {
+    supplierName: undefined,
+    startDate: undefined,
+    endDate: undefined,
+  };
+
   ngOnInit() {
-    const purchaseStreamCreator = query => this.purchaseService.getList(query);
+    const purchaseStreamCreator = query =>
+      this.purchaseService.getList({
+        ...query,
+        ...this.filters,
+      });
 
     this.list.hookToQuery(purchaseStreamCreator).subscribe(response => {
       this.purchase = response;
     });
+  }
+
+  applyFilters() {
+    this.list.get(); // reload list with filters
+  }
+
+  clearFilter() {
+    this.filters.supplierName = undefined;
+    this.filters.startDate = undefined;
+    this.filters.endDate = undefined;
+    this.list.get();
   }
 
   createPurchase() {

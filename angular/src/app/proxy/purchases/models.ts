@@ -19,7 +19,9 @@ export interface CreateUpdatePurchaseItemDto {
 }
 
 export interface GetPurchaseListDto extends PagedAndSortedResultRequestDto {
-  filter?: string;
+  supplierName?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface PurchaseDto extends EntityDto<string> {

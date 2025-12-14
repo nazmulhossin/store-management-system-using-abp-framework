@@ -37,7 +37,7 @@ namespace MyStore.Purchases
         {
             foreach (var item in purchase.PurchaseItems)
             {
-                await _stockManager.IncreaseStockAsync(
+                await _stockManager.IncreaseOrCreateStockAsync(
                     item.ProductName,
                     item.WarehouseName,
                     item.Quantity

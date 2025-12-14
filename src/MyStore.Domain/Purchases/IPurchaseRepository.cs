@@ -11,7 +11,15 @@ namespace MyStore.Purchases
             int skipCount,
             int maxResultCount,
             string sorting,
-            string filter = null
+            string? supplierName = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        );
+
+        Task<long> GetCountAsync(
+            string? customerName = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null
         );
     }
 }

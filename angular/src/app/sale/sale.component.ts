@@ -26,7 +26,7 @@ import {
   ModalCloseDirective,
   ModalComponent
 } from '@abp/ng.theme.shared';
-import { CreateUpdateSaleDto, SaleDto, SaleListDto, SaleService } from '../proxy/sales';
+import { CreateUpdateSaleDto, GetSaleListDto, SaleDto, SaleListDto, SaleService } from '../proxy/sales';
 
 @Component({
   selector: 'app-sale',
@@ -62,16 +62,36 @@ export class SaleComponent implements OnInit {
 
   sales = { items: [], totalCount: 0 } as PagedResultDto<SaleListDto>;
   selectedSale = {} as SaleDto;
-
   form: FormGroup;
   isModalOpen = false;
 
+  filters: Partial<GetSaleListDto> = {
+    customerName: undefined,
+    startDate: undefined,
+    endDate: undefined,
+  };
+
   ngOnInit() {
-    const saleStreamCreator = query => this.saleService.getList(query);
+    const saleStreamCreator = query =>
+      this.saleService.getList({
+        ...query,
+        ...this.filters,
+      });
 
     this.list.hookToQuery(saleStreamCreator).subscribe(response => {
       this.sales = response;
     });
+  }
+
+  applyFilters() {
+    this.list.get(); // triggers reload with new filters
+  }
+
+  clearFilter() {
+    this.filters.customerName = undefined;
+    this.filters.startDate = undefined;
+    this.filters.endDate = undefined;
+    this.list.get();
   }
 
   createSale() {

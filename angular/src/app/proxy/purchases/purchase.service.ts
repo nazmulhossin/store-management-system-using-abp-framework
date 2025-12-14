@@ -40,7 +40,7 @@ export class PurchaseService {
     this.restService.request<any, PagedResultDto<PurchaseListDto>>({
       method: 'GET',
       url: '/api/app/purchase',
-      params: { filter: input.filter, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+      params: { supplierName: input.supplierName, startDate: input.startDate, endDate: input.endDate, sorting: input.sorting, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
     },
     { apiName: this.apiName,...config });
   

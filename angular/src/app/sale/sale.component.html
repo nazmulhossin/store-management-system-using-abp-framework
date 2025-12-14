@@ -17,7 +17,34 @@
       </div>
     </div>
   </div>
+
   <div class="card-body">
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="{{ '::CustomerName' | abpLocalization }}"
+          [(ngModel)]="filters.customerName" />
+      </div>
+
+      <div class="col-md-3">
+        <input type="date" class="form-control" [(ngModel)]="filters.startDate" />
+      </div>
+
+      <div class="col-md-3">
+        <input type="date" class="form-control" [(ngModel)]="filters.endDate" />
+      </div>
+
+      <div class="col-md-2 d-flex align-items-end">
+        <button class="btn btn-primary w-100  p-2 me-2" (click)="applyFilters()">
+          <i class="fa fa-filter me-1"></i>
+          {{ '::Filter' | abpLocalization }}
+        </button>
+
+        <button class="btn btn-outline-secondary  p-2" (click)="clearFilter()">
+          {{ '::Clear' | abpLocalization }}
+        </button>
+      </div>
+    </div>
+
     <ngx-datatable [rows]="sales.items" [count]="sales.totalCount" [list]="list" default>
       <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
         <ng-template let-row="row" ngx-datatable-cell-template>

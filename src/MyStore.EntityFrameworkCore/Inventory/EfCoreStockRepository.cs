@@ -35,6 +35,7 @@ namespace MyStore.Inventory
                     !warehouseName.IsNullOrWhiteSpace(),
                     x => x.WarehouseName.Contains(warehouseName!)
                 )
+                .Where(x => x.CurrentStock > 0)
                 .OrderBy(
                     sorting.IsNullOrWhiteSpace()
                         ? nameof(Stock.ProductName)
@@ -61,6 +62,7 @@ namespace MyStore.Inventory
                     !warehouseName.IsNullOrWhiteSpace(),
                     x => x.WarehouseName.Contains(warehouseName!)
                 )
+                .Where(x => x.CurrentStock > 0)
                 .LongCountAsync();
         }
 

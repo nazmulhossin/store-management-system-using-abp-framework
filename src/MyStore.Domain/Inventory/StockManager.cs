@@ -13,12 +13,10 @@ namespace MyStore.Inventory
             _stockRepository = stockRepository;
         }
 
-        public async Task AddStockAsync(string productName, string warehouseName, int quantity)
+        public async Task IncreaseOrCreateStockAsync(string productName, string warehouseName, int quantity)
         {
             if (quantity <= 0)
-            {
                 throw new BusinessException(MyStoreDomainErrorCodes.QuantityMustBeGreaterThanZero);
-            }
 
             var stock = await _stockRepository.FindByProductAndWarehouseAsync(productName, warehouseName);
             if (stock == null)
@@ -31,25 +29,6 @@ namespace MyStore.Inventory
                 stock.IncreaseStock(quantity);
                 await _stockRepository.UpdateAsync(stock);
             }
-        }
-
-        public async Task RemoveStockAsync(string productName, string warehouseName, int quantity)
-        {
-            if (quantity <= 0)
-            {
-                throw new BusinessException(MyStoreDomainErrorCodes.QuantityMustBeGreaterThanZero);
-            }
-
-            var stock = await _stockRepository.FindByProductAndWarehouseAsync(productName, warehouseName);
-            if (stock == null)
-            {
-                throw new BusinessException(MyStoreDomainErrorCodes.StockNotFoundForProductAndWarehouse)
-                    .WithData("ProductName", productName)
-                    .WithData("WarehouseName", warehouseName);
-            }
-
-            stock.DecreaseStock(quantity);
-            await _stockRepository.UpdateAsync(stock);
         }
 
         public async Task IncreaseStockAsync(string productName, string warehouseName, int quantity)

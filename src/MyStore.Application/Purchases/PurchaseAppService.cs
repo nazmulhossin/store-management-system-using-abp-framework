@@ -44,10 +44,16 @@ namespace MyStore.Purchases
                 input.SkipCount,
                 input.MaxResultCount,
                 input.Sorting,
-                input.Filter
+                input.SupplierName,
+                input.StartDate,
+                input.EndDate
             );
 
-            var totalCount = await _purchaseRepository.CountAsync();
+            var totalCount = await _purchaseRepository.GetCountAsync(
+                input.SupplierName,
+                input.StartDate,
+                input.EndDate
+            );
 
             return new PagedResultDto<PurchaseListDto>(
                 totalCount,
