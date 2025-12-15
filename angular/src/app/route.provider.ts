@@ -18,13 +18,6 @@ function configureRoutes() {
       layout: eLayoutType.application,
     },
     {
-      path: '/books',
-      name: '::Menu:Books',
-      iconClass: 'fas fa-book',
-      layout: eLayoutType.application,
-      requiredPolicy: 'MyStore.Books',
-    },
-    {
       path: '/purchases',
       name: '::Menu:Purchases',
       iconClass: 'fa fa-shopping-cart',
