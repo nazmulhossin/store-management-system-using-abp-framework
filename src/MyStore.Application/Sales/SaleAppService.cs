@@ -14,7 +14,7 @@ namespace MyStore.Sales
         private readonly SaleManager _saleManager;
         private readonly ISaleRepository _saleRepository;
 
-        public SaleAppService(ISaleRepository saleRepository, SaleManager saleManager)
+        public SaleAppService(SaleManager saleManager, ISaleRepository saleRepository)
         {
             _saleManager = saleManager;
             _saleRepository = saleRepository;
@@ -75,6 +75,7 @@ namespace MyStore.Sales
                 );
             }
 
+            // Validate has at least one item
             sale.EnsureHasSaleItems();
 
             // Reduce stock

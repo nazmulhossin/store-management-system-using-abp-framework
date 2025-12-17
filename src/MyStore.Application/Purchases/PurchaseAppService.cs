@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using MyStore.Inventory;
 using MyStore.Permissions;
-using MyStore.Sales;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
-using Volo.Abp.Domain.Repositories;
 
 namespace MyStore.Purchases
 {
@@ -20,8 +16,7 @@ namespace MyStore.Purchases
 
         public PurchaseAppService(
             IPurchaseRepository purchaseRepository, 
-            PurchaseManager purchaseManager,
-            StockManager stockManager)
+            PurchaseManager purchaseManager)
         {
             _purchaseRepository = purchaseRepository;
             _purchaseManager = purchaseManager;
@@ -132,7 +127,7 @@ namespace MyStore.Purchases
                 );
             }
 
-            // Validate aggregate
+            // Validate has at least one item
             purchase.EnsureHasPurchaseItems();
 
             // Increase stock for purchase

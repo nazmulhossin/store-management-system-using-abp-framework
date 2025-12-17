@@ -1,5 +1,4 @@
 ﻿using MyStore.Inventory;
-using MyStore.Sales;
 using System;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Services;
