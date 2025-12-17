@@ -24,7 +24,7 @@ namespace MyStore.Purchases
 
         public async Task<PurchaseDto> GetAsync(Guid id)
         {
-            var purchase = await _purchaseRepository.GetAsync(id, includeDetails: true);
+            var purchase = await _purchaseRepository.FindAsync(id, includeDetails: true);
             return ObjectMapper.Map<Purchase, PurchaseDto>(purchase);
         }
 
@@ -95,7 +95,7 @@ namespace MyStore.Purchases
         public async Task<PurchaseDto> UpdateAsync(Guid id, CreateUpdatePurchaseDto input)
         {
             // Load the existing purchase including items
-            var purchase = await _purchaseRepository.GetAsync(id, includeDetails: true);
+            var purchase = await _purchaseRepository.FindAsync(id, includeDetails: true);
             if (purchase == null)
             {
                 throw new EntityNotFoundException(typeof(Purchase), id);
@@ -142,7 +142,7 @@ namespace MyStore.Purchases
         public async Task DeleteAsync(Guid id)
         {
             // Load the purchase with its items
-            var purchase = await _purchaseRepository.GetAsync(id, includeDetails: true);
+            var purchase = await _purchaseRepository.FindAsync(id, includeDetails: true);
             if (purchase == null)
             {
                 throw new EntityNotFoundException(typeof(Purchase), id);
